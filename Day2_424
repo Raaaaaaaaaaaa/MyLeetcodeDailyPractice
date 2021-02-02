@@ -1,0 +1,26 @@
+  public int characterReplacement(String s, int k) {
+        //记录当前循环中s中出现的字母的频数
+        int[] times = new int[26];
+        //定义左右指针来表示窗口的左右边界
+        int leftPoint = 0;
+        int rightPoint = 0;
+        //出现的最多的字母的频数
+        int maxn = 0;
+
+        //当右边界未到字符串尾时继续循环
+        while (rightPoint < s.length()){
+            times[s.charAt(rightPoint) - 'A']++;
+            maxn = Math.max(maxn,times[s.charAt(rightPoint) - 'A']);
+            //如果子串中出现的不同的字母超过k，则将窗口平移
+            /*
+            * 为什么不用维护窗口呢？因为历史中已经出现过rightPoint - leftPoint + 1的长度得窗口了
+            * */
+            if(rightPoint - leftPoint + 1 - maxn > k){
+                //左边界增加了，所以左边界字母出现的频数减少
+                times[s.charAt(leftPoint) - 'A']--;
+                leftPoint++;
+            }
+            rightPoint++;
+        }
+        return rightPoint - leftPoint;
+    }
