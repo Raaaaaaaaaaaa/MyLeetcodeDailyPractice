@@ -1,0 +1,58 @@
+public class Solution {
+    public Double subsetArray(int[] nums,int leftPoint,int rightPoint,boolean isEvenNumber){
+        //窗口的长度，实际就是k
+        int len = rightPoint - leftPoint + 1;
+        //创建窗口数组用于排序后计算中位数
+        double[] tempArray = new double[len];
+        int distance = len / 2;
+        double temp = 0;
+
+        //为窗口数组赋值
+        for (int i = 0,j = leftPoint; i < len; i++,j++) {
+            tempArray[i] = nums[j];
+        }
+
+       //将窗口数组从小到大排序
+        Arrays.sort(tempArray);
+
+        //偶数的情况
+       if(isEvenNumber){
+          temp = (tempArray[distance] + tempArray[distance - 1]) / 2.0;
+       }else{
+           //奇数的情况
+           temp = tempArray[distance];
+       }
+
+       return temp;
+    }
+    public double[] medianSlidingWindow(int[] nums, int k) {
+        //记录每次窗口移动的左右边界
+        int leftPoint = 0;
+        int rightPoint = leftPoint + k - 1;
+        //判断窗体是否为偶数
+        boolean isEvenNumber = false;
+
+        if(k % 2 == 0){
+            isEvenNumber = true;
+        }
+
+        //记录窗口每一次移动的中位数
+        double temp;
+        //创建一个新的集合来保存中位数数组
+        //nums.length - k + 1为中位数数组的个数
+        double[] midArrays = new double[nums.length - k + 1];
+
+        //midArraysIndex记录中位数数组的索引
+        int midArraysIndex = 0;
+        while(rightPoint < nums.length){
+            temp = this.subsetArray(nums,leftPoint,rightPoint,isEvenNumber);
+            //将中位数加入到结果数组中
+            midArrays[midArraysIndex++] = temp;
+            //每次循环窗口向右平移
+            leftPoint++;
+            rightPoint++;
+        }
+
+        return midArrays;
+    }
+}
