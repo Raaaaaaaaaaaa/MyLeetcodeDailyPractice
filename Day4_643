@@ -1,0 +1,31 @@
+public double findMaxAverage(int[] nums, int k) {
+        //记录每次窗口更新后的和
+        Double sum;
+
+        //记录窗口的左右边界
+        int leftPtr = 0;
+        int rightPtr = leftPtr + k - 1;
+
+        //先求出窗口大小的初始平均值
+        Double maxAverage = 0.0;
+        for (int i = 0; i < k ; i++) {
+            maxAverage += nums[i];
+        }
+        sum = maxAverage;
+        maxAverage /=  k;
+
+
+        //rightPtr等于nums.length - 1时候已经遍历完所有的平均值
+        while (rightPtr < nums.length - 1){
+            sum = sum - nums[leftPtr] + nums[rightPtr + 1];
+
+            if(sum / k > maxAverage){
+                maxAverage = sum / k;
+            }
+
+            leftPtr++;
+            rightPtr++;
+        }
+
+        return maxAverage;
+    }
