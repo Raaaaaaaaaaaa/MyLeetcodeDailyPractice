@@ -12,20 +12,19 @@ public double findMaxAverage(int[] nums, int k) {
             maxAverage += nums[i];
         }
         sum = maxAverage;
-        maxAverage /=  k;
 
 
         //rightPtr等于nums.length - 1时候已经遍历完所有的平均值
         while (rightPtr < nums.length - 1){
             sum = sum - nums[leftPtr] + nums[rightPtr + 1];
 
-            if(sum / k > maxAverage){
-                maxAverage = sum / k;
+            if(sum  > maxAverage){
+                maxAverage = sum;
             }
 
             leftPtr++;
             rightPtr++;
         }
 
-        return maxAverage;
+        return maxAverage / k;
     }
