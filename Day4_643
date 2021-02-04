@@ -1,6 +1,17 @@
 public double findMaxAverage(int[] nums, int k) {
+        /*TODO   
+        * 不需要一开始就定义出Double类型
+        * 可以先定义成int最后返回的时候除或者乘小数
+        * 即可自动转换成Double
+        * */
         //记录每次窗口更新后的和
         Double sum;
+
+        /*TODO
+        * 不一定需要特别定义窗口的左右边界，
+        * 可以寻找窗口大小k与左右边界的关系
+        * 节省内存空间
+        * */
 
         //记录窗口的左右边界
         int leftPtr = 0;
@@ -18,6 +29,9 @@ public double findMaxAverage(int[] nums, int k) {
         while (rightPtr < nums.length - 1){
             sum = sum - nums[leftPtr] + nums[rightPtr + 1];
 
+            /*TODO
+            * 可以用Math的api代替,即Math.max(a,b)
+            * */
             if(sum  > maxAverage){
                 maxAverage = sum;
             }
