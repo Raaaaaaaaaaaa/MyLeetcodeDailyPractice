@@ -1,0 +1,26 @@
+ public boolean checkPossibility(int[] nums) {
+        int isReduceSub = 0;
+
+        for (int i = 0; i < nums.length - 1; i++) {
+            /*
+            * 如果出现递减的情况,或者
+            * 没有出现递减但是右边界却
+            * 小于前一个窗口最大值的情况
+            * (这种情况可能出现的情况是nums[i] > nums[i+1],且nums[i] > nums[i+2],但是nums[i+2] > nums[i+1])
+            * 增加isReduceSub的值
+            * */
+            if(nums[i + 1] < nums[i]){
+                isReduceSub++;
+
+                if(i > 0 && nums[i + 1] < nums[i - 1]){
+                    nums[i+1] = nums[i];
+                }
+            }
+
+            if(isReduceSub >= 2){
+                return false;
+            }
+        }
+
+        return true;
+    }
