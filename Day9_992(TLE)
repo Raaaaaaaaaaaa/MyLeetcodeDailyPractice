@@ -1,0 +1,86 @@
+  /*
+     * 用一次循环遍历数组A，首先动用一个大小为k的滑动窗口,
+     * 初始时，窗口左边界为0，右边界为”左边界+k-1“，
+     * 作为一个子集数组，如果符合则窗口大小加1,不符合则更
+     * 新窗口，左边界增加，重新生成大小仍为k的窗口进行判断
+     * */
+
+    public int subarraysWithKDistinct(int[] A, int K) {
+        //nums用来存放一个子集出现的不同的数字
+        HashSet nums = new HashSet();
+        //记录好数组的个数
+        int goodArraies = 0;
+
+        //leftPtr和rightPtr是当前滑动窗口的左右边界
+        //注意右边界是闭区间
+        for (int leftPtr = 0,rightPtr = leftPtr + K - 1; leftPtr + K - 1 < A.length ;
+             leftPtr++,rightPtr = leftPtr + K - 1) {
+            //更新滑动窗口时候，清空nums里的所有元素
+            if(leftPtr > 0){
+                nums.clear();
+            }
+            //先将左边界的元素添加进去
+            nums.add(A[leftPtr]);
+
+            /*
+            * 遍历滑动窗口，看是否符合好数组的定义
+            * */
+           outer: while (true){
+                //从左边界+1除开始遍历
+                //注意右边界是闭区间
+                for (int i = leftPtr + 1; i <= rightPtr ; i++) {
+                    //如果没有nums没有这个元素，怎么将其添加进去
+                    if(!nums.contains(A[i])){
+                        nums.add(A[i]);
+                    }
+                }
+
+                /*遍历完成后看看是否符合好数组的定义
+                 *小于k时，包含此时滑动窗口的子数组
+                 * 可能是好数组，所以得继续循环下去
+                 * */
+                if(nums.size() > K){
+                    //不符合直接跳出循环，更新滑动窗口
+                    break;
+                }else {
+                    //此时的情况是小于等于k
+                    //符合则扩大滑动窗口大小
+                    rightPtr++;
+                    //等于k时好数组个数才增加
+                    if(nums.size() == K){
+                        //好数组个数增加
+                        goodArraies++;
+                    }
+
+                    //此时直接判断扩大的滑动窗口是不是符合定义即可
+                    //即直接判断边界扩大后新的数字
+                    while (true){
+                        //先判断是否越界
+                        //如果出现一个新的数字，则不符合定义，直接跳出到for即可
+                        if( rightPtr < A.length &&!nums.contains(A[rightPtr]) && nums.size() > K){
+                            break outer;
+                        }else {
+                            if(rightPtr >= A.length){
+                                break outer;
+                            }
+
+                            if(!nums.contains(A[rightPtr])){
+                                nums.add(A[rightPtr]);
+                            }
+
+                            //否则继续扩大滑动窗口
+                            rightPtr++;
+
+                            if(nums.size() == K){
+                                goodArraies++;
+                            }else if (nums.size() > K){
+                                break outer;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return goodArraies;
+    }
