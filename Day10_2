@@ -1,0 +1,73 @@
+public class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2){
+        ListNodeWay listNodeWay = new ListNodeWay(l1, l2);
+        while (listNodeWay.l1 != null && listNodeWay.l2 != null){
+            listNodeWay.newVal = listNodeWay.l1.val + listNodeWay.l2.val + listNodeWay.carry;
+            listNodeWay.carry = listNodeWay.newVal / 10;
+            if(listNodeWay.isFirst == true){
+                listNodeWay.temp = listNodeWay.handleCarry(listNodeWay.newVal);
+                listNodeWay.isFirst = false;
+                listNodeWay.head = listNodeWay.temp;
+            }else {
+                listNodeWay.newNode = listNodeWay.handleCarry(listNodeWay.newVal);
+                listNodeWay.temp.next = listNodeWay.newNode;
+                listNodeWay.temp = listNodeWay.newNode;
+            }
+            listNodeWay.l1 = listNodeWay.l1.next;
+            listNodeWay.l2 = listNodeWay.l2.next;
+        }
+
+        listNodeWay.finalHandleCarrry(listNodeWay.l1,listNodeWay.l2);
+        listNodeWay.ifCarry();
+
+        return listNodeWay.head;
+    }
+    class ListNodeWay{
+        int newVal = 0;
+        int carry = 0;
+        boolean isFirst = true;
+        ListNode temp = null;
+        ListNode head = null;
+        ListNode newNode = null;
+        ListNode l1 = null;
+        ListNode l2 = null;
+
+        public ListNodeWay(){}
+        public ListNodeWay(ListNode l1, ListNode l2) {
+            this.l1 = l1;
+            this.l2 = l2;
+        }
+
+        public ListNode handleCarry(int newVal){
+            return new ListNode(newVal % 10,null);
+        }
+
+        public void finalHandleCarrry(ListNode l1,ListNode l2){
+            if(l1 == null){
+                toFinalHandleCarrry(l2);
+            }else if(l2 == null) {
+                toFinalHandleCarrry(l1);
+            }
+        }
+
+        public void toFinalHandleCarrry(ListNode l){
+            while (l != null){
+                //处理进位
+                l.val += carry;
+                carry = l.val / 10;
+                l.val %= 10;
+
+                this.temp.next = l;
+                this.temp = l;
+                l = l.next;
+            }
+        }
+
+        public void ifCarry(){
+            if(this.carry > 0){
+                this.newNode = this.handleCarry(this.carry);
+                this.temp.next = this.newNode;
+            }
+        }
+    }
+}
