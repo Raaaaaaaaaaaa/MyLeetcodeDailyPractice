@@ -1,0 +1,26 @@
+public int[] twoSum(int[] nums, int target) {
+        if(nums.length == 2){
+            return new int[]{0,1};
+        }
+
+        int leftPtr = 0;
+        int rightPtr = leftPtr + 1;
+        int end = nums.length;
+
+        int[] arrIndex = new int[]{0,-1};
+        int sum = nums[leftPtr];
+        while(true){
+            if(sum + nums[rightPtr] == target){
+                arrIndex[1] = rightPtr;
+                return arrIndex;
+            }
+
+            rightPtr++;
+
+            if(rightPtr == end){
+                arrIndex[0] = ++leftPtr;
+                sum = nums[leftPtr];
+                rightPtr = leftPtr + 1;
+            }
+        }
+    }
