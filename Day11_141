@@ -1,0 +1,28 @@
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if(head == null){
+            return false;
+        }
+
+        LinkedList<ListNode> hasPassed = new LinkedList<>();
+        ListNode ptr = head;
+
+        while (true){
+            if(hasPassed.isEmpty()){
+                hasPassed.add(ptr);
+            }else {
+                if (hasPassed.contains(ptr)) {
+                    return true;
+                }
+
+                if(ptr == null){
+                    return false;
+                }
+
+                hasPassed.add(ptr);
+            }
+
+            ptr = ptr.next;
+        }
+    }
+}
